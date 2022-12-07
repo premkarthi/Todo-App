@@ -45,11 +45,11 @@ class Store{
     }
     sorting(value){
         let todos = this.data
-        if (value == 'descending'){
+        if (value == 'ascending'){
             let sortedArray = todos.sort(function(a,b){
-                if (a.title < b.title)
+                if (a.title.toLowerCase() < b.title.toLowerCase())
                    return -1;
-                else if (a.name == b.name)
+                else if (a.title.toLowerCase() == b.title.toLowerCase())
                    return 0;
                 else
                    return 1;
@@ -58,9 +58,9 @@ class Store{
         }
         else{
             let sortedArray = todos.sort(function(a,b){
-                if (a.title > b.title)
+                if (a.title.toLowerCase() > b.title.toLowerCase())
                    return -1;
-                else if (a.name == b.name)
+                else if (a.title.toLowerCase() == b.title.toLowerCase())
                    return 0;
                 else
                    return 1;

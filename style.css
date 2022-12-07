@@ -190,12 +190,59 @@ form{
     min-height: 20px;
 }
 
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pageList{
+    display: flex;
+    align-items: center;
+    margin: 0px 10px;
+    list-style-type: none;
 
+}
+.pageNum{
+    width: 20px;
+    height: auto;
+    padding: 5px;
+    text-align: center;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+.pageNum.active{
+    background: rgba(44, 160, 145, 0.477);
+}
+.pageNum.active:hover{
+    background: rgba(44, 160, 145, 0.477);
+}
+
+.prev,
+.next{
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: 5px;
+    border: 1px solid #ddd;
+}
+
+.prev:hover,
+.next:hover,
+.pageNum:hover{
+    background: #c7c7c7;
+}
 @media screen and (max-width:600px){
     .todoList{
         display: block;
     }
     .addNew{
         width: 100%;
+    }
+    .modal{
+        min-width: 92%;
     }
 }

@@ -7,7 +7,6 @@ const btnCloseModal = document.querySelector('.close');
 const btnsOpenModal = document.querySelector('.addNew');
 
 const openModal = function () {
-    
     modal.classList.remove('hidden');
     overlay.classList.remove('hidden');
   };
@@ -18,6 +17,7 @@ const closeModal = function (e) {
     FormDetail.reset()
     submitBtn.style.display = 'block'
     updateBtn.style.display = 'none'
+    document.querySelector('.formTitle').innerHTML = 'Add your task'
 }
   
 btnsOpenModal.addEventListener('click', openModal)
@@ -32,9 +32,9 @@ document.addEventListener('keydown', function (e) {
 //Form Insertion & Validations
 const submitBtn = document.querySelector('.submit')
 const updateBtn = document.querySelector('.update')
-
-
 const FormDetail = document.getElementById('form')
+
+
 
 submitBtn.addEventListener('click', function(e){
     e.preventDefault()
@@ -60,11 +60,15 @@ submitBtn.addEventListener('click', function(e){
    }
  
 })
+
 var updateDetail ;
 updateBtn.addEventListener('click', function(e){
     e.preventDefault()
     
-    if(FormValidation(title) && FormValidation(description) && FormValidation(statusForm) && FormValidation(teamFrom)){
+    if(FormValidation(title) 
+        && FormValidation(description) 
+        && FormValidation(statusForm)
+        && FormValidation(teamFrom)){
         let randomNumber = updateDetail.id
         let date = new Date().toDateString()
         let data = {
@@ -98,8 +102,6 @@ function FormValidation(detail){
 
 
 
-
-
 const todoList = document.querySelector('.todoList')
 function createListInDom(data){
     todoList.innerHTML = ''
@@ -129,10 +131,8 @@ function createListInDom(data){
 }
  
 
-let datasFromlocal = local.getTodos()
-let store = new Store(datasFromlocal)
-createListInDom(store.getItems())
-console.log(store.getItems());
+
+
 
 
 todoList.addEventListener('click', function(e) {
@@ -144,6 +144,7 @@ todoList.addEventListener('click', function(e) {
     if(e.target.classList.contains('update')){
         submitBtn.style.display = 'none'
         updateBtn.style.display = 'block'
+        document.querySelector('.formTitle').innerHTML = 'Update your task'
         const update = store.getUpdateItem(e.target.id)
         updateDetail = update
         const [title, description, statusForm, teamFrom] = FormDetail
@@ -152,7 +153,6 @@ todoList.addEventListener('click', function(e) {
         statusForm.value = update.statusForm
         teamFrom.value = update.teamFrom
         openModal();
-      
     }
 })
 
@@ -180,3 +180,81 @@ const reset = document.querySelector('.reset')
 reset.addEventListener('click', function () {
     document.querySelector('.filters').reset()
 })
+
+
+
+
+let datasFromlocal = local.getTodos()
+let store = new Store(datasFromlocal)
+
+
+let createDataAsPerPage = []
+let countList = document.querySelector('.pageList')
+let item_per_page = 4
+let todata = store.getItems()
+
+function Pagination(data, item_per_page){
+    let lenthOfData = data.length
+    if (lenthOfData == 0){
+        return createListInDom(data)
+    }
+    let pageCount = Math.round(lenthOfData/item_per_page)
+    for (let index = 1; index <= pageCount; index++) {
+        let createEle = `<li class="pageNum ${(index == 1) ? 'active' : ''}" id="page-${index}">${index}</li>`
+        countList.insertAdjacentHTML("beforeend", createEle)
+    }
+    
+    for (let i = 0; i < item_per_page; i++) {
+        createDataAsPerPage.unshift(data[i])
+    }
+    
+}   
+let paginationDom = document.querySelector('.pagination')
+
+paginationDom.addEventListener('click', function(e){
+    if (e.target.classList.contains('pageNum')){
+        document.querySelectorAll('.pageNum').forEach((item)=>{
+            item.classList.remove('active')
+        })
+        e.target.classList.add('active')
+        let start = (e.target.innerText - 1) * item_per_page
+        createPage(start, e.target.innerText *item_per_page)
+    }
+    
+   
+    if(e.target.classList.contains('prev')){
+        var num =  countList.querySelector('.active')?.previousSibling
+        if (num != null || num != undefined){
+            document.querySelectorAll('.pageNum').forEach((item)=>{
+                item.classList.remove('active')
+            })
+            num.classList.add('active')
+            let start = (num.innerText - 1) * item_per_page
+            createPage(start, num.innerText *item_per_page)
+        }
+        // else{
+        //     e.target.style.opacity = 0.5
+        // }
+    }
+    if(e.target.classList.contains('next')){
+        var num =  countList.querySelector('.active')?.nextSibling
+        if (num != null && num != undefined){
+            document.querySelectorAll('.pageNum').forEach((item)=>{
+                item.classList.remove('active')
+            })
+            num.classList.add('active')
+            let start = (num.innerText - 1) * item_per_page
+            createPage(start, num.innerText *item_per_page)
+        }
+    }
+
+    function createPage(start, end){
+        console.log(start, end);
+        createDataAsPerPage = todata.slice(start,end)
+        createListInDom(createDataAsPerPage)
+    }
+})
+
+Pagination(todata, item_per_page)
+createListInDom(createDataAsPerPage)
+console.log(todata);
