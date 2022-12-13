@@ -132,3 +132,33 @@ section::after{
 .rightBtn{
     transform: rotate(180deg);
 }
+
+@media screen  and (max-width:576px){
+    section::after, section::before{
+        display: none;
+    }
+    .desc{
+        padding: 10px;
+    }
+    .desc p,h3{
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+        display: -webkit-box;
+        height: 90px;
+        -webkit-box-orient: vertical;
+    }
+    .desc h3{
+        -webkit-line-clamp: 1;
+        height: 25px;
+    }
+    .dots-list{
+        bottom: 0px;
+    }
+    .slide{
+        display: block;
+    }
+    .image{
+        max-height: 290px;
+        overflow: hidden;
+    }
+}

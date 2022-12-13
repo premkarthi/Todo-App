@@ -4,15 +4,14 @@ const leftBtn = document.querySelector('.leftBtn')
 const rightBtn = document.querySelector('.rightBtn')
 const dots = document.querySelector('.dots-list')
 
-let maxLength = slides.length -1
-
+let maxLength = slides.length - 1
 currentSlide = 1
 
-
+const mobile = window.innerWidth <= 600
 
 const slider = (item) =>{
     slides.forEach((s , i) => s.style.transform = `translateX(${105 * (i - item)}%) scale(${0.9})`)
-    slides[item].style.transform = `scale(${1.1})`
+    mobile ? '' : slides[item].style.transform = `scale(${1.1})`
 }
 
 const leftHandle = ()=>{
@@ -64,3 +63,5 @@ rightBtn.addEventListener('click', rightHandle)
 createDots()
 activeDots(currentSlide)
 slider(currentSlide)
+
+
